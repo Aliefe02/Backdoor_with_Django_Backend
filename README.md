@@ -1,2 +1,1 @@
-# Backdoor_with_Django_Backend
-Django restapi server allows communication between 2 computer.
+This django restapi server allows 2 desktop application to communicate with eachother. In This example there are 2 apps. Admin and Victim. These apps can be used as a backdoor. The commands sent by the Admin app will be received by the Victim.
