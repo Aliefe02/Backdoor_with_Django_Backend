@@ -44,7 +44,7 @@ while True:
             while True:
                 try:
                     requests.post(url=url+'endsession',data={'SECRET_KEY':api_key})
-                    break
+                    exit()
                 except:
                     pass
         if msg[:2]=='cd':
